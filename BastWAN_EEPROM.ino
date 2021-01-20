@@ -2,6 +2,13 @@
 
 #include "SparkFun_External_EEPROM.h"
 // Click here to get the library: http://librarymanager/All#SparkFun_External_EEPROM
+/*
+You need to define the buffer lengths in SparkFun_External_EEPROM.h
+Around line 56:
+#elif defined(_VARIANT_ELECTRONICCATS_BASTWAN_)
+#define I2C_BUFFER_LENGTH_RX SERIAL_BUFFER_SIZE
+#define I2C_BUFFER_LENGTH_TX SERIAL_BUFFER_SIZE
+*/
 ExternalEEPROM myMem;
 unsigned char buf[256];
 
@@ -13,6 +20,9 @@ void setup() {
   Serial.println("Buffer size: " + String(SERIAL_BUFFER_SIZE));
   Wire.begin(SDA, SCL);
   Wire.setClock(100000);
+  // bool begin(uint8_t deviceAddress = 0b1010000, TwoWire &wirePort = Wire);
+  // deviceAddress = 0x50
+  // flip switches on the breakout board to change it to between 0x51 and 0x57.
   if (myMem.begin() == false) {
     Serial.println("No memory detected. Freezing.");
     while (1)
